@@ -7,33 +7,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bglogin font-sans flex items-center justify-center min-h-screen">
 
     <!-- Seção de Login -->
-    <section id="loginSection" class="min-h-screen flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login do Administrador</h2>
+    <section id="loginSection" class="w-full max-w-lg">
+        <div class="bg-white p-8 rounded-lg shadow-lg "> 
+            <div class="flex justify-center">
+              <img 
+                 src="./images/logo.jpeg" 
+                 alt="logo" 
+                 class="max-h-64 mb-6 rounded-full shadow-lg" 
+                />
+            </div>
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Administração<br>Futuras Cientistas</h2>
             <form>
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="nome@example.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
                 <div class="mb-6">
-                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Senha</label>
-                    <input type="password" id="password" name="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="************" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
-                <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
-                        Entrar
-                    </button>
-                </div>
+<div class="flex items-center justify-between">
+    <button 
+        type="submit" 
+        class="w-full py-2 px-4 text-white botaohex hover:bg-cyan-800 hover:scale-105 hover:shadow-xl font-bold rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
+        >
+        Entrar
+    </button>
+</div>
             </form>
         </div>
     </section>
 
     <!-- Seção do Dashboard -->
+    <div>
     <section id="dashboardSection" class="hidden">
-        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+        <header class="bg-white shadow-md p-4 ">
             <h1 class="text-3xl font-bold text-gray-800">Dashboard de Cientistas</h1>
             <button id="logoutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                 Sair
@@ -50,6 +61,7 @@
             </div>
         </main>
     </section>
+    </div>
 
     <!-- Modal para Adicionar/Editar Cientista -->
     <div id="scientistModal" class="modal-overlay hidden">
