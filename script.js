@@ -70,28 +70,29 @@ function renderScientists(scientists) {
       <p class="text-gray-600">${scientist.descricao}</p>
     </div>
     <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
- 
-            <button title="Gerenciar Quiz" onclick="openQuizModal(${
-              scientist.id
-            }, '${scientist.nome.replace(
+             <button onclick="openQuizModal(${
+               scientist.id
+             }, '${scientist.nome.replace(
       /'/g,
       "\\'"
-    )}')" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-full">
-                  <i class="mdi mdi-text-box-edit-outline text-2xl"></i>
-              </button>
-  
-    <button title="Editar Cientista" onclick="openScientistModal(${
+    )}')" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2">
+                <span>Gerenciar Quiz</span>
+                       <i class="mdi mdi-text-box-edit-outline text-xl"></i>
+         </button>
+    <button onclick="openScientistModal(${
       scientist.id
-    })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full">
-        <i class="mdi mdi-account-edit-outline text-2xl"></i>
-    </button>
+    })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2">
+                <span>Editar</span>
+                      <i class="mdi mdi-account-edit-outline text-xl"></i>
+ </button>
 
-    <button title="Deletar Cientista" onclick="handleDeleteScientist(${
+<button onclick="handleDeleteScientist(${
       scientist.id
-    })" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-full">
-                  <i class="mdi mdi-delete-outline text-2xl"></i>
-              </button>
- </div>
+    })" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2">
+                <span>Deletar</span>
+                <i class="mdi mdi-delete-outline text-xl"></i>
+ </button>
+</div>
 `;
     scientistsList.appendChild(div);
   });
