@@ -65,27 +65,34 @@ function renderScientists(scientists) {
     div.className =
       "bg-white p-4 rounded-lg shadow-md flex justify-between items-center";
     div.innerHTML = `
-            <div>
-                <h3 class="text-xl font-bold text-gray-800">${
-                  scientist.nome
-                }</h3>
-                <p class="text-gray-600">${scientist.descricao}</p>
-            </div>
-            <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-                <button onclick="openQuizModal(${
-                  scientist.id
-                }, '${scientist.nome.replace(
+      <div>
+     <h3 class="text-xl font-bold text-gray-800">${scientist.nome}</h3>
+      <p class="text-gray-600">${scientist.descricao}</p>
+    </div>
+    <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+ 
+            <button title="Gerenciar Quiz" onclick="openQuizModal(${
+              scientist.id
+            }, '${scientist.nome.replace(
       /'/g,
       "\\'"
-    )}')" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Gerenciar Quiz</button>
-                <button onclick="openScientistModal(${
-                  scientist.id
-                })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
-                <button onclick="handleDeleteScientist(${
-                  scientist.id
-                })" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Deletar</button>
-            </div>
-        `;
+    )}')" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-full">
+                  <i class="mdi mdi-text-box-edit-outline text-2xl"></i>
+              </button>
+  
+    <button title="Editar Cientista" onclick="openScientistModal(${
+      scientist.id
+    })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full">
+        <i class="mdi mdi-account-edit-outline text-2xl"></i>
+    </button>
+
+    <button title="Deletar Cientista" onclick="handleDeleteScientist(${
+      scientist.id
+    })" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-full">
+                  <i class="mdi mdi-delete-outline text-2xl"></i>
+              </button>
+ </div>
+`;
     scientistsList.appendChild(div);
   });
 }
