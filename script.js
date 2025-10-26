@@ -13,6 +13,7 @@ const logoutButton = document.getElementById("logoutButton");
 const scientistsList = document.getElementById("scientistsList");
 const loadingIndicator = document.getElementById("loadingIndicator");
 const addScientistButton = document.getElementById("addScientistButton");
+const searchBar = document.getElementById("searchBar");
 
 const scientistModal = document.getElementById("scientistModal");
 const scientistForm = document.getElementById("scientistForm");
@@ -126,6 +127,7 @@ const fetchScientists = async () => {
       .order("id");
     if (error) throw error;
     currentScientists = data;
+    searchBar.value = "";
     renderScientists(currentScientists);
   } catch (error) {
     handleSupabaseError(error, "buscar cientistas");
@@ -386,7 +388,6 @@ const handleDeleteQuestion = async (questionId) => {
   }
 };
 
-// --- LÓGICA DE LOGIN E INICIALIZAÇÃO ---
 async function handleLogin(event) {
   event.preventDefault();
   showLoading();
@@ -419,6 +420,13 @@ document.addEventListener("DOMContentLoaded", () => {
   scientistForm.addEventListener("submit", handleSaveScientist);
   closeQuizModalButton.addEventListener("click", closeQuizModal);
   quizForm.addEventListener("submit", handleSaveQuestion);
+  searchBar.addEventListener("input", (event) => {
+    const searchTerm = event.target.value.toLowerCase().trim();
+    const filteredScientists = currentScientists.filter((scientist) => {
+      return scientist.nome.toLowerCase().includes(searchTerm);
+    });
+    renderScientists(filteredScientists);
+  });
 
   dbClient.auth.onAuthStateChange((_event, session) => {
     if (session) {
