@@ -129,16 +129,13 @@
     <div id="scientistModal" class="modal-overlay hidden">
       <div class="modal-content">
         <h3 id="modalTitle" class="text-2xl font-bold mb-4"></h3>
-        {/* Adiciona enctype para permitir upload de ficheiro */}
         <form id="scientistForm" enctype="multipart/form-data">
           <input type="hidden" id="scientistId" />
-          {/* Input hidden para guardar o caminho do ícone atual ao editar */}
           <input type="hidden" id="currentIconPath" />
           <div class="mb-4">
             <label for="nome" class="block text-gray-700">Nome</label>
             <input type="text" id="nome" class="modal-input" required />
         </div>
-          {/* ***** ALTERAÇÃO: Input de URL para Input de Ficheiro ***** */}
           <div class="mb-4">
             <label for="icone_file" class="block text-gray-700">Ícone (Imagem)</label>
             <input 
@@ -149,7 +146,6 @@
               accept="image/png, image/jpeg, image/webp"
             />
             <p class="text-sm text-gray-500 mt-1">Deixe em branco se não quiser alterar o ícone existente (ao editar).</p>
-            {/* Elemento para pré-visualização da imagem */}
             <img id="icone_preview" src="" alt="Pré-visualização do Ícone" class="mt-2 h-20 w-20 object-cover rounded hidden border border-gray-300">
           </div>
           <div class="mb-4">
