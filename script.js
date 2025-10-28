@@ -1,6 +1,5 @@
-// --- CONFIGURAÇÃO ---
 const SUPABASE_URL = "https://uwnlupxfwqeortbnuinl.supabase.co";
-// CORREÇÃO: Havia um erro de digitação ('ı' em vez de '1') na chave original.
+
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3bmx1cHhmd3Flb3J0Ym51aW5sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTA5ODcsImV4cCI6MjA3MTEyNjk4N30.sugSUyCfWkJQzuGbfbjgHqmv-nAQMqqD9-t-giohquw";
 const { createClient } = supabase;
@@ -8,7 +7,6 @@ const dbClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const BUCKET_NAME = "icones_cientistas";
 
-// --- ELEMENTOS DO DOM ---
 const loginSection = document.getElementById("loginSection");
 const dashboardSection = document.getElementById("dashboardSection");
 const logoutButton = document.getElementById("logoutButton");
@@ -21,9 +19,9 @@ const scientistModal = document.getElementById("scientistModal");
 const scientistForm = document.getElementById("scientistForm");
 const modalTitle = document.getElementById("modalTitle");
 const formScientistId = document.getElementById("scientistId");
-const currentIconPathInput = document.getElementById("currentIconPath"); // Input hidden para path atual
-const iconFileInput = document.getElementById("icone_file"); // Input para upload
-const iconPreview = document.getElementById("icone_preview"); // Imagem de preview
+const currentIconPathInput = document.getElementById("currentIconPath");
+const iconFileInput = document.getElementById("icone_file");
+const iconPreview = document.getElementById("icone_preview");
 const closeModalButton = document.getElementById("closeModalButton");
 
 const quizModal = document.getElementById("quizModal");
@@ -37,11 +35,9 @@ const closeQuizModalButton = document.getElementById("closeQuizModalButton");
 const quizScientistId = document.getElementById("quizScientistId");
 const editingQuestionIdInput = document.getElementById("editingQuestionId");
 
-// --- ESTADO DA APLICAÇÃO ---
 let currentScientists = [];
-let currentQuizQuestions = []; // Armazena as perguntas com as opções
+let currentQuizQuestions = [];
 
-// --- FUNÇÕES DE UI ---
 const showLoading = () => (loadingIndicator.style.display = "flex");
 const hideLoading = () => (loadingIndicator.style.display = "none");
 
@@ -69,16 +65,15 @@ function renderScientists(scientistsToRender) {
   scientistsToRender.forEach((scientist) => {
     const div = document.createElement("div");
     div.className =
-      "bg-white p-4 rounded-lg shadow-md flex justify-between items-center flex-wrap"; // Adicionado flex-wrap
+      "bg-white p-4 rounded-lg shadow-md flex justify-between items-center flex-wrap";
 
     const imageUrl = scientist.icon_url
       ? `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${scientist.icon_url}`
-      : "./images/placeholder.png"; // Garanta que este placeholder existe
+      : "./images/placeholder.png";
 
-    // Conteúdo Principal (Imagem e Texto)
     const contentDiv = document.createElement("div");
     contentDiv.className =
-      "flex items-center space-x-4 flex-1 min-w-[200px] mb-3 md:mb-0"; // Largura mínima e margem inferior em telas pequenas
+      "flex items-center space-x-4 flex-1 min-w-[200px] mb-3 md:mb-0";
     contentDiv.innerHTML = `
         <img src="${imageUrl}" alt="Ícone de ${scientist.nome}" class="h-16 w-16 rounded-full object-cover border-2 border-gray-300 flex-shrink-0">
         <div class="min-w-0">
@@ -87,10 +82,9 @@ function renderScientists(scientistsToRender) {
         </div>
     `;
 
-    // Botões (agora com ícones)
     const buttonsDiv = document.createElement("div");
     buttonsDiv.className =
-      "flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 w-full sm:w-auto"; // Ocupa largura total em telas pequenas
+      "flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 w-full sm:w-auto";
     buttonsDiv.innerHTML = `
         <button onclick="openQuizModal(${
           scientist.id
@@ -122,24 +116,23 @@ function renderScientists(scientistsToRender) {
 }
 
 const openScientistModal = (id = null) => {
-  scientistForm.reset(); // Limpa todos os campos
-  iconPreview.src = ""; // Limpa URL do preview
-  iconPreview.classList.add("hidden"); // Esconde preview
-  currentIconPathInput.value = ""; // Limpa path guardado
+  scientistForm.reset();
+  iconPreview.src = "";
+  iconPreview.classList.add("hidden");
+  currentIconPathInput.value = "";
 
   if (id) {
     modalTitle.textContent = "Editar Cientista";
     const scientist = currentScientists.find((s) => s.id === id);
-    if (!scientist) return; // Segurança extra
+    if (!scientist) return;
 
     formScientistId.value = scientist.id;
     document.getElementById("nome").value = scientist.nome;
-    // Guarda o CAMINHO relativo do ícone atual
+
     currentIconPathInput.value = scientist.icon_url || "";
     document.getElementById("descricao").value = scientist.descricao;
     document.getElementById("video_url").value = scientist.video_url;
 
-    // Mostra a imagem atual no preview, se existir
     if (scientist.icon_url) {
       iconPreview.src = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${scientist.icon_url}`;
       iconPreview.classList.remove("hidden");
@@ -152,7 +145,6 @@ const openScientistModal = (id = null) => {
 };
 const closeScientistModal = () => (scientistModal.style.display = "none");
 
-// --- LÓGICA DE DADOS ---
 const fetchScientists = async () => {
   showLoading();
   try {
@@ -161,8 +153,8 @@ const fetchScientists = async () => {
       .select("*")
       .order("id");
     if (error) throw error;
-    currentScientists = data || []; // Garante que é sempre um array
-    displayedScientists = currentScientists; // Inicialmente mostra todas
+    currentScientists = data || [];
+    displayedScientists = currentScientists;
     renderScientists(displayedScientists);
   } catch (error) {
     handleSupabaseError(error, "buscar cientistas");
@@ -178,28 +170,26 @@ const handleSaveScientist = async (event) => {
   const currentIconPath = currentIconPathInput.value;
   const file = iconFileInput.files[0];
 
-  let iconPath = currentIconPath; // Assume path atual por defeito
+  let iconPath = currentIconPath;
 
   try {
-    // 1. Upload do novo ficheiro (se existir)
     if (file) {
       console.log("Ficheiro selecionado, a fazer upload...");
-      // Gera nome único para evitar conflitos e caracteres inválidos
+
       const fileName = `${Date.now()}_${file.name.replace(
         /[^a-zA-Z0-9._-]/g,
         "_"
       )}`;
-      const filePath = `${fileName}`; // Guarda na raiz do bucket
+      const filePath = `${fileName}`;
 
       const { data: uploadData, error: uploadError } = await dbClient.storage
         .from(BUCKET_NAME)
         .upload(filePath, file, {
-          cacheControl: "3600", // Cache por 1 hora
-          upsert: false, // Não sobrescreve ficheiros com o mesmo nome
+          cacheControl: "3600",
+          upsert: false,
         });
 
       if (uploadError) {
-        // Trata erros comuns de upload (ex: nome duplicado se upsert=false)
         if (
           uploadError.message.includes(
             "duplicate key value violates unique constraint"
@@ -212,17 +202,15 @@ const handleSaveScientist = async (event) => {
         throw uploadError;
       }
 
-      iconPath = uploadData.path; // Guarda o CAMINHO retornado pelo Supabase
+      iconPath = uploadData.path;
       console.log("Upload bem-sucedido. Novo path:", iconPath);
 
-      // 2. Apagar ficheiro antigo (APENAS se estiver a EDITAR e um NOVO foi enviado E existia um antigo)
       if (id && currentIconPath && currentIconPath !== iconPath) {
         console.log(`A apagar ícone antigo: ${currentIconPath}`);
         const { error: deleteError } = await dbClient.storage
           .from(BUCKET_NAME)
           .remove([currentIconPath]);
         if (deleteError) {
-          // Apenas avisa, não impede o resto da operação
           console.warn("Aviso: Falha ao apagar o ícone antigo.", deleteError);
         } else {
           console.log("Ícone antigo apagado.");
@@ -232,16 +220,14 @@ const handleSaveScientist = async (event) => {
       console.log("Nenhum ficheiro novo selecionado.");
     }
 
-    // 3. Preparar dados para o banco (usando o iconPath correto)
     const scientistData = {
       nome: document.getElementById("nome").value.trim(),
-      // Guarda o CAMINHO relativo, ou null se não houver imagem
+
       icon_url: iconPath || null,
       descricao: document.getElementById("descricao").value.trim(),
       video_url: document.getElementById("video_url").value.trim(),
     };
 
-    // Validação básica
     if (
       !scientistData.nome ||
       !scientistData.descricao ||
@@ -250,11 +236,9 @@ const handleSaveScientist = async (event) => {
       throw new Error("Nome, Descrição e URL do Vídeo são obrigatórios.");
     }
     if (!id && !scientistData.icon_url) {
-      // Exige imagem ao criar
       throw new Error("O Ícone é obrigatório ao adicionar uma nova cientista.");
     }
 
-    // 4. Salvar/Atualizar na tabela 'cientistas'
     if (id) {
       console.log("A atualizar cientista ID:", id);
       const { error } = await dbClient
@@ -272,25 +256,22 @@ const handleSaveScientist = async (event) => {
         .single();
       if (error) throw error;
       console.log("Nova cientista criada:", data);
-      // Fecha o modal e abre o quiz APENAS após sucesso
+
       closeScientistModal();
       await fetchScientists();
       openQuizModal(data.id, data.nome);
-      hideLoading(); // Esconde o loading aqui para não fechar o modal do quiz
-      return; // Sai da função para não fechar o modal do quiz no finally
+      hideLoading();
+      return;
     }
 
-    // Fecha o modal e atualiza a lista (para edição)
     closeScientistModal();
     await fetchScientists();
   } catch (error) {
     handleSupabaseError(error, "salvar cientista (com upload)");
   } finally {
-    // Garante que o input de ficheiro é limpo
     iconFileInput.value = "";
-    // Garante que o loading é escondido (exceto no caso de sucesso ao criar)
+
     if (!id) {
-      /* não faz nada se criou */
     } else {
       hideLoading();
     }
@@ -313,8 +294,6 @@ const handleDeleteScientist = async (id) => {
 
   showLoading();
   try {
-    // 1. Apaga a entrada da tabela 'cientistas'
-    // A deleção em cascata configurada no DB deve apagar perguntas/opções
     const { error: dbError } = await dbClient
       .from("cientistas")
       .delete()
@@ -322,13 +301,12 @@ const handleDeleteScientist = async (id) => {
     if (dbError) throw dbError;
     console.log("Registo da cientista apagado do DB.");
 
-    // 2. Apaga o ficheiro do ícone no Storage (se existir)
     if (scientistToDelete.icon_url) {
       console.log(`A apagar ícone do Storage: ${scientistToDelete.icon_url}`);
       const { error: storageError } = await dbClient.storage
         .from(BUCKET_NAME)
         .remove([scientistToDelete.icon_url]);
-      // Apenas avisa sobre o erro, não impede a atualização da UI
+
       if (storageError)
         console.warn(
           "Aviso: Falha ao apagar o ficheiro do ícone.",
@@ -337,8 +315,7 @@ const handleDeleteScientist = async (id) => {
       else console.log("Ficheiro do ícone apagado do Storage.");
     }
 
-    // 3. Atualiza a lista na UI
-    await fetchScientists(); // Busca a lista atualizada do DB
+    await fetchScientists();
   } catch (error) {
     handleSupabaseError(error, "deletar cientista (e ícone)");
   } finally {
@@ -346,7 +323,6 @@ const handleDeleteScientist = async (id) => {
   }
 };
 
-// --- LÓGICA DO QUIZ ---
 const openQuizModal = async (scientistId, scientistName) => {
   quizModalTitle.textContent = `Quiz de ${scientistName}`;
   quizScientistId.value = scientistId;
@@ -466,31 +442,26 @@ const handleSaveQuestion = async (event) => {
 
   try {
     if (editingQuestionId) {
-      // --- LÓGICA DE ATUALIZAÇÃO ---
       const { error: updateError } = await dbClient
         .from("perguntas")
         .update({ texto_pergunta: textoPergunta })
         .eq("id", editingQuestionId);
       if (updateError) throw updateError;
 
-      // *** A CORREÇÃO ESTÁ AQUI ***
-      // Ao atualizar, precisamos de incluir o 'pergunta_id' em cada opção.
       const opcoesParaAtualizar = Array.from(opcoesInputs).map(
         (input, index) => ({
           id: parseInt(input.dataset.optionId, 10),
-          pergunta_id: editingQuestionId, // <--- Esta linha foi adicionada
+          pergunta_id: editingQuestionId,
           texto_opcao: input.value.trim(),
           e_correta: index === opcaoCorretaIndex,
         })
       );
 
-      // Usamos 'upsert' para atualizar as opções existentes.
       const { error: optionsError } = await dbClient
         .from("opcoes")
         .upsert(opcoesParaAtualizar);
       if (optionsError) throw optionsError;
     } else {
-      // --- LÓGICA DE CRIAÇÃO (existente) ---
       const { data: perguntaData, error: perguntaError } = await dbClient
         .from("perguntas")
         .insert({ texto_pergunta: textoPergunta, cientista_id: scientistId })
@@ -569,7 +540,6 @@ if (iconFileInput) {
   iconFileInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      // Verifica se é uma imagem
       const reader = new FileReader();
       reader.onload = (e) => {
         iconPreview.src = e.target.result;
@@ -577,14 +547,13 @@ if (iconFileInput) {
       };
       reader.readAsDataURL(file);
     } else {
-      // Limpa se não for imagem ou se o ficheiro for desmarcado
       iconPreview.src = "";
       iconPreview.classList.add("hidden");
       if (file)
         alert(
           "Por favor, selecione um ficheiro de imagem válido (png, jpg, webp)."
         );
-      iconFileInput.value = ""; // Limpa o input se inválido
+      iconFileInput.value = "";
     }
   });
 }
@@ -608,11 +577,13 @@ document.addEventListener("DOMContentLoaded", () => {
   dbClient.auth.onAuthStateChange((_event, session) => {
     if (session) {
       loginSection.style.display = "none";
+      dashboardWrapper.classList.remove("hidden");
       dashboardSection.style.display = "block";
       fetchScientists();
     } else {
       loginSection.style.display = "block";
       dashboardSection.style.display = "none";
+      dashboardWrapper.classList.add("hidden");
     }
   });
 });
