@@ -1,0 +1,22 @@
+# .github/workflows/keep-alive.yml
+
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Executa a cada 12 horas (ao meio-dia e à meia-noite UTC)
+    - cron: '0 */12 * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest # Usa uma máquina virtual Linux padrão
+
+    steps:
+      - name: Envia requisição para a API do Supabase
+        run: |
+          curl --request GET \
+          --url '${{ secrets.SUPABASE_URL }}/rest/v1/cientistas?select=id&limit=1' \
+          --header 'apikey: ${{ secrets.SUPABASE_ANON_KEY }}' \
+          --header 'Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}'
